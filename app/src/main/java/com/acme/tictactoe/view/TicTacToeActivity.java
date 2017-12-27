@@ -1,4 +1,4 @@
-package com.acme.tictactoe.controller;
+package com.acme.tictactoe.view;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,8 +14,10 @@ import android.widget.TextView;
 import com.acme.tictactoe.R;
 import com.acme.tictactoe.model.Board;
 import com.acme.tictactoe.model.Player;
+import com.acme.tictactoe.presenter.Presenter;
+import com.acme.tictactoe.presenter.TicTacToePresenter;
 
-public class TicTacToeActivity extends AppCompatActivity {
+public class TicTacToeActivity extends AppCompatActivity implements TicTacToeView {
 
     private static String TAG = TicTacToeActivity.class.getName();
 
@@ -25,6 +27,8 @@ public class TicTacToeActivity extends AppCompatActivity {
     private View winnerPlayerViewGroup;
     private TextView winnerPlayerLabel;
 
+    private Presenter mPresenter = new TicTacToePresenter(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,9 +36,10 @@ public class TicTacToeActivity extends AppCompatActivity {
         winnerPlayerLabel = (TextView) findViewById(R.id.winnerPlayerLabel);
         winnerPlayerViewGroup = findViewById(R.id.winnerPlayerViewGroup);
         buttonGrid = (ViewGroup) findViewById(R.id.buttonGrid);
-
-        model = new Board();
+//        model = new Board();
+        mPresenter.onCreate();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,7 +51,8 @@ public class TicTacToeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_reset:
-                reset();
+                mPresenter.onResetSelected();
+//                reset();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -85,4 +91,23 @@ public class TicTacToeActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void showWinner(String winningPlayerDisplayLabel) {
+
+    }
+
+    @Override
+    public void clearWinnerDisplay() {
+
+    }
+
+    @Override
+    public void clearButtons() {
+
+    }
+
+    @Override
+    public void setButtonText(int row, int col, String text) {
+
+    }
 }
