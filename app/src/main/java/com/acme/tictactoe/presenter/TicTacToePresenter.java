@@ -2,6 +2,7 @@ package com.acme.tictactoe.presenter;
 
 
 import com.acme.tictactoe.model.Board;
+import com.acme.tictactoe.model.Player;
 import com.acme.tictactoe.view.TicTacToeView;
 
 public class TicTacToePresenter implements Presenter {
@@ -32,6 +33,18 @@ public class TicTacToePresenter implements Presenter {
     @Override
     public void onDestroy() {
 
+    }
+
+    public void onButtonSelected(int row, int col) {
+        Player playerThatMoved = model.mark(row, col);
+
+        if(playerThatMoved != null) {
+            view.setButtonText(row, col, playerThatMoved.toString());
+
+            if (model.getWinner() != null) {
+                view.showWinner(playerThatMoved.toString());
+            }
+        }
     }
 
     public void onResetSelected() {

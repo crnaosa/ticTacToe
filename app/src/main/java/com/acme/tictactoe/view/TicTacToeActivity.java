@@ -27,7 +27,7 @@ public class TicTacToeActivity extends AppCompatActivity implements TicTacToeVie
     private View winnerPlayerViewGroup;
     private TextView winnerPlayerLabel;
 
-    private Presenter mPresenter = new TicTacToePresenter(this);
+    TicTacToePresenter mPresenter = new TicTacToePresenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,46 +68,55 @@ public class TicTacToeActivity extends AppCompatActivity implements TicTacToeVie
         int col = Integer.valueOf(tag.substring(1,2));
         Log.i(TAG, "Click Row: [" + row + "," + col + "]");
 
-        Player playerThatMoved = model.mark(row, col);
-
-        if(playerThatMoved != null) {
-            button.setText(playerThatMoved.toString());
-            if (model.getWinner() != null) {
-                winnerPlayerLabel.setText(playerThatMoved.toString());
-                winnerPlayerViewGroup.setVisibility(View.VISIBLE);
-            }
-        }
+        mPresenter.onButtonSelected(row, col);
+//        Player playerThatMoved = model.mark(row, col);
+//
+//        if(playerThatMoved != null) {
+//            button.setText(playerThatMoved.toString());
+//            if (model.getWinner() != null) {
+//                winnerPlayerLabel.setText(playerThatMoved.toString());
+//                winnerPlayerViewGroup.setVisibility(View.VISIBLE);
+//            }
+//        }
 
     }
 
-    private void reset() {
+    // handle reset from presenter
+//    private void reset() {
+//        winnerPlayerViewGroup.setVisibility(View.GONE);
+//        winnerPlayerLabel.setText("");
+
+//        model.restart();
+
+//        for( int i = 0; i < buttonGrid.getChildCount(); i++ ) {
+//            ((Button) buttonGrid.getChildAt(i)).setText("");
+//        }
+//    }
+
+    @Override
+    public void showWinner(String winningPlayerDisplayLabel) {
+        winnerPlayerLabel.setText(winningPlayerDisplayLabel);
+        winnerPlayerViewGroup.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void clearWinnerDisplay() {
         winnerPlayerViewGroup.setVisibility(View.GONE);
         winnerPlayerLabel.setText("");
+    }
 
-        model.restart();
-
+    @Override
+    public void clearButtons() {
         for( int i = 0; i < buttonGrid.getChildCount(); i++ ) {
             ((Button) buttonGrid.getChildAt(i)).setText("");
         }
     }
 
     @Override
-    public void showWinner(String winningPlayerDisplayLabel) {
-
-    }
-
-    @Override
-    public void clearWinnerDisplay() {
-
-    }
-
-    @Override
-    public void clearButtons() {
-
-    }
-
-    @Override
     public void setButtonText(int row, int col, String text) {
-
+        Button btn = buttonGrid.findViewWithTag("" + row + col);
+        if(btn != null) {
+            btn.setText(text);
+        }
     }
 }
